@@ -30,7 +30,17 @@ def addPost(request):
         return HttpResponseRedirect(reverse(index))
 
 
-
+def profile(request, user_id):
+    user = User.objects.get(pk=user_id)
+    allPosts = Post.objects.filter(user=user).order_by("id").reverse()
+    paginator = Paginator(allPosts, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "network/profile.html", {
+        "allPosts": allPosts,
+        "page_obj": page_obj,
+        "username": user.username
+    })
 
 def login_view(request):
     if request.method == "POST":
