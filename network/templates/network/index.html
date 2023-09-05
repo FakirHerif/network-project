@@ -12,4 +12,12 @@
             </form>    
         {% endif %}
     </div>
+    <div class="allPosts">
+
+        {% for post in allPosts %}
+
+        <h3>{{ post.content }}</h3>
+        
+        {% endfor %}
+    </div>
 {% endblock %}
