@@ -3,14 +3,7 @@
 {% block body %}
     <div id="body">
         <h1>{{ username }}</h1>
-        {% if user.is_authenticated %}
-            <h2>New Post</h2>
-            <form action="{% url 'addPost' %}" method="POST">
-                {% csrf_token %}
-                <textarea name="content" id="" cols="30" rows="3"></textarea>
-                <input type="submit" name="" id="" class="" value="Send">
-            </form>    
-        {% endif %}
+
     </div>
     <div class="allPosts">
 
