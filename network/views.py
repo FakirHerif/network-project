@@ -38,13 +38,29 @@ def profile(request, user_id):
     page_obj = paginator.get_page(page_number)
     following = Follow.objects.filter(user=user)
     followers = Follow.objects.filter(user_followed=user)
+    try:
+        checkFollow = followers.filter(user=User.objects.get(pk=request.user.id))
+        if len(checkFollow) !=0:
+            isFollowing = True
+        else:
+            isFollowing = False
+    except:
+        isFollowing = False
     return render(request, "network/profile.html", {
         "allPosts": allPosts,
         "page_obj": page_obj,
         "username": user.username,
         "following": following,
-        "followers": followers
+        "followers": followers,
+        "isFollowing": isFollowing,
+        "userExist": user
     })
+
+def follow(request):
+    return
+
+def unfollow(request):
+    return
 
 def login_view(request):
     if request.method == "POST":
