@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Post, Follow
+from .models import User, Post, Follow, Like
 
 import json
 from django.http import JsonResponse
@@ -18,9 +18,21 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    likes = Like.objects.all()
+
+    liked = []
+    try:
+        for like in likes:
+            if like.user.id == request.user.id:
+                liked.append(like.post.id)
+    except:
+        liked =[]
+    
+
     return render(request, "network/index.html", {
         "allPosts": allPosts,
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "liked": liked
     })
 
 

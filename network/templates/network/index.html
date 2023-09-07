@@ -80,6 +80,12 @@
                               </div>
                             </div>
                           </div>
+                    {% else %}
+                        {% if post.id in liked %}
+                        <button class="btn btn-info fa fa-thumbs-down col-1" id="{{ post.id }}"></button>
+                        {% else %}
+                        <button class="btn btn-info fa fa-thumbs-up col-1" id="{{ post.id }}"></button>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             </div>
