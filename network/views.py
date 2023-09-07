@@ -20,20 +20,35 @@ def index(request):
 
     likes = Like.objects.all()
 
-    liked = []
+    whoYouLiked = []
     try:
         for like in likes:
             if like.user.id == request.user.id:
-                liked.append(like.post.id)
+                whoYouLiked.append(like.post.id)
     except:
-        liked =[]
+        whoYouLiked =[]
     
 
     return render(request, "network/index.html", {
         "allPosts": allPosts,
         "page_obj": page_obj,
-        "liked": liked
+        "whoYouLiked": whoYouLiked
     })
+
+
+def like_remove(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    user = User.objects.get(pk=request.user.id)
+    like = Like.objects.filter(user=user, post=post)
+    like.delete()
+    return JsonResponse({"message": "UNLIKED!"})
+
+def like_add(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    user = User.objects.get(pk=request.user.id)
+    likeNew = Like(user=user, post=post)
+    likeNew.save()
+    return JsonResponse({"message": "LIKED!"})
 
 
 def edit(request, post_id):
