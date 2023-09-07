@@ -56,6 +56,25 @@ def profile(request, user_id):
         "userExist": user
     })
 
+def following(request):
+    userCurrent = User.objects.get(pk=request.user.id)
+    followPpl = Follow.objects.filter(user=userCurrent)
+    postAll = Post.objects.all().order_by('id').reverse()
+    postsFollowing = []
+
+    for post in postAll:
+        for person in followPpl:
+            if person.user_followed == post.user:
+                postsFollowing.append(post)
+
+    paginator = Paginator(postsFollowing, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "network/following.html", {
+        "page_obj": page_obj
+    })                
+
 def follow(request):
     userfollow = request.POST['userfollow']
     userCurrent = User.objects.get(pk=request.user.id)
