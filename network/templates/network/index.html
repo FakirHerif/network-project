@@ -35,39 +35,31 @@
     })
 }
 
-function LikeHandler(id, whoYouLiked){
-        const btn = document.getElementById(`${id}`);
+    let whoYouLiked = [];
 
-        btn.classList.remove('fa-thumbs-up')
-        btn.classList.remove('fa-thumbs-down')
+    function LikeHandler(id) {
+    let btn = document.getElementById(`${id}`);
 
-        if(whoYouLiked.indexOf(id) >= 0){
-            var liked = true;
-        } else {
-            var liked = false;
-        }
-
-        if(liked === true){
-            fetch(`/like_remove/${id}`)
-            .then(response => response.json)
+    if (whoYouLiked.indexOf(id) >= 0) {
+        fetch(`/like_remove/${id}`)
+            .then(response => response.json())
             .then(result => {
-                btn.classList.add('fa-thumbs-up')
-            })
-        } else {
-            fetch(`/like_add/${id}`)
-            .then(response => response.json)
+                btn.classList.remove('fa-thumbs-down');
+                btn.classList.add('fa-thumbs-up'); // Like yapıldığında butonu "fa-thumbs-up" olarak değiştir
+                // whoYouLiked dizisini güncelle 
+                whoYouLiked.splice(whoYouLiked.indexOf(id), 1); // Beğeni kaldır
+            });
+    } else {
+        fetch(`/like_add/${id}`)
+            .then(response => response.json())
             .then(result => {
-                btn.classList.add('fa-thumbs-down')
-            })
-        }
-        liked = !liked
+                btn.classList.remove('fa-thumbs-up');
+                btn.classList.add('fa-thumbs-down'); // Unlike yapıldığında butonu "fa-thumbs-down" olarak değiştir
+                // whoYouLiked dizisini güncelle
+                whoYouLiked.push(id); // Beğeni ekle
+            });
     }
-
-
-
-
-
-
+}
 
 </script>
 
