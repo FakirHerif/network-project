@@ -1,6 +1,30 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
+<script>
+    function getCookie(name){
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length == 2) return parts.pop().split(';').shift();
+    }
+
+    function saveChanges(button) {
+    const postId = button.getAttribute('data-post-id');
+    const textAreaValue = document.getElementById(`textarea_${postId}`).value;
+    fetch(`/edit/${postId}`, {
+        method: "POST",
+        headers: {"Content-type": "application/json", "X-CSRFToken": getCookie("csrftoken")},
+        body: JSON.stringify( {
+            content: textAreaValue
+        })
+    })
+    .then(response => response.json())
+    .then(result => console.log(result))
+}
+</script>
+
+
     <div id="body">
         <h1>ALL POSTS</h1>
         {% if user.is_authenticated %}
@@ -37,7 +61,7 @@
                                   <textarea name="content" id="textarea_{{ post.id }}" cols="30" rows="5" class="form-control">{{ post.content }}</textarea>
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button class="btn btn-primary" data-post-id="{{ post.id }}" onclick="saveChanges(this)">Save changes</button>
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                               </div>

@@ -7,6 +7,9 @@ from django.core.paginator import Paginator
 
 from .models import User, Post, Follow
 
+import json
+from django.http import JsonResponse
+
 
 def index(request):
     allPosts = Post.objects.all().order_by("id").reverse()
@@ -19,6 +22,15 @@ def index(request):
         "allPosts": allPosts,
         "page_obj": page_obj
     })
+
+
+def edit(request, post_id):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        post_edit = Post.objects.get(pk=post_id)
+        post_edit.content = data["content"]
+        post_edit.save()
+        return JsonResponse({"message": "SAVE OK!", "data": data["content"] })
 
 
 def addPost(request):
