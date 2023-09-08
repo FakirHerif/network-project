@@ -1,13 +1,13 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    <div id="body">
-        <h1>{{ username }}</h1>
+<div id="body">
+        <h1 style="font-family:fantasy">#{{ username }}'s Profile</h1>
 
         <div class="">
             <div class="">
-                <h3 class="">Followers = {{ followers.count }} </h3>
-                <h3 class="">Following = {{ following.count }}</h3>
+                <h3 style="font-family:fantasy" class="">Followers = {{ followers.count }} </h3>
+                <h3 style="font-family:fantasy" class="">Following = {{ following.count }}</h3>
                 {% if user.is_authenticated %}
                     {% if user != userExist %}
                         {% if isFollowing %}
@@ -28,8 +28,8 @@
             </div>
         </div>
 
-    </div>
-    <div class="allPosts">
+    
+            <div class="allPosts">
 
         {% for post in page_obj %}
                 <h5 class="username"><a href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
@@ -37,7 +37,7 @@
                 <p class="date">{{ post.date }}</p>
             </div>
         {% endfor %}
-    </div>
+    
 
     <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -61,5 +61,6 @@
             {% endif %}
         </ul>
       </nav>
+</div>
 
 {% endblock %}

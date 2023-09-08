@@ -61,32 +61,58 @@
     }
 }
 
+
+    // Bu fonksiyon, textarea'ya tıkladığınızda veya odaklandığınızda varsayılan metni siler
+    function clearDefaultText(textarea) {
+        if (textarea.value === "Write your post") {
+            textarea.value = "";
+        }
+    }
+
+    // Bu fonksiyon, textarea odak kaybettiğinde ve içerik boşsa varsayılan metni geri ekler
+    function restoreDefaultText(textarea) {
+        if (textarea.value.trim() === "") {
+            textarea.value = "Write your post";
+        }
+    }
+
+    // Bu fonksiyon, textarea boşsa veya varsayılan metni içeriyorsa göndermeyi engeller
+    function checkEmpty(textarea) {
+        if (textarea.value.trim() === "" || textarea.value === "Write your post") {
+            alert("Post content cannot be empty! or Post content cannot be same!");
+            return false;
+        }
+        return true;
+    }
+
 </script>
 
 
     <div id="body">
-        <h1>ALL POSTS</h1>
+        <h1 style="font-family:fantasy">ALL POSTS</h1>
+        <br>
         {% if user.is_authenticated %}
-            <h2>New Post</h2>
-            <form action="{% url 'addPost' %}" method="POST">
+            <h2 style="font-family:fantasy">New Post</h2>
+            <form action="{% url 'addPost' %}" method="POST" onsubmit="return checkEmpty(this.content)">
                 {% csrf_token %}
-                <textarea name="content" id="" cols="30" rows="3"></textarea>
-                <input type="submit" name="" id="" class="" value="Send">
+                <textarea name="content" id="postContent" style="font-size: 30px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" onclick="clearDefaultText(this)" onblur="restoreDefaultText(this)" oninput="checkDefaultText(this)">Write your post</textarea>
+                <input type="submit" name="" id="" class="sendButton" value="Send">
             </form>    
         {% endif %}
-    </div>
+    
 
-    <div class="allPosts">
         {% for post in page_obj %}
-            <div>
-                <h5 class="username"><a href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
+        
+            <div class="allPosts">
                 <h6 class="content" id="content_{{ post.id }}">{{ post.content }}</h6>
-                <p class="date">{{ post.date }}</p>
+                <br>
+                <h5 class="username"><a style="color: red; font-weight: bold; font-family:cursive" href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
+                <p class="date">on {{ post.date }}</p>
                 {% if user.is_authenticated %}
                     {% if user == post.user %}
-                        <div class="">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_post_{{ post.id }}">Edit</button>
-                        </div>
+                        
+                            <button class="btn btn-primary" id="editButton" data-toggle="modal" data-target="#modal_edit_post_{{ post.id }}">Edit</button>
+                        
                         <div class="modal fade" id="modal_edit_post_{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="modal_edit_post_{{ post.id }}_label" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                               <div class="modal-content">
@@ -107,6 +133,7 @@
                             </div>
                           </div>
                     {% else %}
+                    <br>
                         {% if post.id in whoYouLiked %}
                         <button class="btn btn-info fa fa-thumbs-down col-1" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
                         {% else %}
@@ -116,7 +143,8 @@
                 {% endif %}
             </div>
         {% endfor %}
-    </div>
+    
+
 
     <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -140,5 +168,5 @@
             {% endif %}
         </ul>
       </nav>
-
+    </div>
 {% endblock %}

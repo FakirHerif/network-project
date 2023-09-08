@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="allPosts">
-        <h1>Following</h1>
+        <h1 style="font-family:fantasy">Following</h1>
         {% for post in page_obj %}
             <div>
                 <h5 class="username"><a href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
