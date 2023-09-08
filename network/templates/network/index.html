@@ -85,6 +85,31 @@
         return true;
     }
 
+
+    function deletePost(postId) {
+    const confirmation = confirm("Are you sure you want to delete this post?");
+    if (confirmation) {
+        fetch(`/delete_post/${postId}/`, {
+            method: "DELETE",
+            headers: {"X-CSRFToken": getCookie("csrftoken")}
+        })
+        .then(response => {
+            if (response.status === 200) {
+                // Gönderi başarıyla silindiğinde sayfayı yeniden yükle
+                window.location.reload();
+            } else if (response.status === 403) {
+                alert("You are not authorized to delete this post.");
+            } else {
+                alert("Failed to delete post.");
+            }
+        })
+        .catch(error => {
+            console.error("An error occurred:", error);
+            alert("An error occurred while deleting the post.");
+        });
+    }
+}
+
 </script>
 
 
@@ -96,8 +121,12 @@
             <form action="{% url 'addPost' %}" method="POST" onsubmit="return checkEmpty(this.content)">
                 {% csrf_token %}
                 <textarea name="content" id="postContent" style="font-size: 30px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" onclick="clearDefaultText(this)" onblur="restoreDefaultText(this)" oninput="checkDefaultText(this)">Write your post</textarea>
+                <br>
                 <input type="submit" name="" id="" class="sendButton" value="Send">
-            </form>    
+            </form> 
+            <br>
+            <br>
+            <br>   
         {% endif %}
     
 
@@ -110,7 +139,9 @@
                 <p class="date">on {{ post.date }}</p>
                 {% if user.is_authenticated %}
                     {% if user == post.user %}
-                        
+                    
+
+                            <button class="btn btn-danger" id="deleteButton" onclick="deletePost(`{{ post.id }}`)">Delete</button>
                             <button class="btn btn-primary" id="editButton" data-toggle="modal" data-target="#modal_edit_post_{{ post.id }}">Edit</button>
                         
                         <div class="modal fade" id="modal_edit_post_{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="modal_edit_post_{{ post.id }}_label" aria-hidden="true">

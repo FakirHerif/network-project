@@ -67,6 +67,17 @@ def addPost(request):
         post = Post(content=content, user=user)
         post.save()
         return HttpResponseRedirect(reverse(index))
+    
+def delete_post(request, post_id):
+    try:
+        post = Post.objects.get(pk=post_id)
+        if post.user == request.user:
+            post.delete()
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return HttpResponse("You are not authorized to delete this post.")
+    except Post.DoesNotExist:
+            return HttpResponse("Post not found.")
 
 
 def profile(request, user_id):

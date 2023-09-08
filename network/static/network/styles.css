@@ -42,6 +42,8 @@
 
 #editButton {
     float: right;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 
@@ -69,11 +71,10 @@ textarea {
 }
 
 .sendButton {
-    background-color: #555555;
-    color: rgba(255, 255, 255, 0.795);
-    border: 2px solid #555555;
+    background-color: green;
+    color: white;
     border: none;
-    padding: 16px 32px;
+    padding: 12px 24px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -85,9 +86,20 @@ textarea {
     font-weight: bold;
   }
   
-  .sendButton:hover {
-    background-color: 555555;
+.sendButton:hover {
+    background-color: green;
     color: white;
     box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.24);
     text-decoration: underline
   }
+
+#deleteButton {
+    float: right;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.sendButton {
+    float: right;
+    margin-top: 10px;
+}
