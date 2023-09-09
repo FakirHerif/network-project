@@ -1,17 +1,17 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+<div id="body">
+<h1 style="font-family:fantasy">Following</h1>
 
-    <div class="allPosts">
-        <h1 style="font-family:fantasy">Following</h1>
         {% for post in page_obj %}
-            <div>
-                <h5 class="username"><a href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
-                <h6 class="content">{{ post.content }}</h6>
-                <p class="date">{{ post.date }}</p>
-            </div>
+        <div class="allPosts">
+            <h6 class="content" id="content_{{ post.id }}">{{ post.content }}</h6>
+            <br>
+            <h5 class="username"><a style="color: red; font-weight: bold; font-family:cursive" href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
+            <p class="date">on {{ post.date }}</p>
+        </div>
         {% endfor %}
-    </div>
 
     <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -35,5 +35,6 @@
             {% endif %}
         </ul>
       </nav>
+</div>
 
 {% endblock %}
