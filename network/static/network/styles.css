@@ -35,7 +35,8 @@
 }
 
 .username,
-.date {
+.date,
+.likez {
     display: inline-block;
     margin-right: 5px;
 }

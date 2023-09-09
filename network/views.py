@@ -31,27 +31,40 @@ def index(request):
     except:
         whoYouLiked =[]
     
+    user = request.user
+    liked_posts = Like.objects.filter(user=user).values_list('post__id', flat=True)
 
     return render(request, "network/index.html", {
         "allPosts": allPosts,
         "page_obj": page_obj,
-        "whoYouLiked": whoYouLiked
+        "whoYouLiked": liked_posts  
     })
 
 
 def like_remove(request, post_id):
     post = Post.objects.get(pk=post_id)
     user = User.objects.get(pk=request.user.id)
-    like = Like.objects.filter(user=user, post=post)
-    like.delete()
-    return JsonResponse({"message": "UNLIKED!"})
+    try:
+        like = Like.objects.get(user=user, post=post)
+        like.delete()
+        post.num_likes -= 1  # Beğeni sayısını azalt
+        post.save()
+        return JsonResponse({"message": "UNLIKED!"})
+    except Like.DoesNotExist:
+        return JsonResponse({"message": "You have not liked this post."})
 
 def like_add(request, post_id):
     post = Post.objects.get(pk=post_id)
     user = User.objects.get(pk=request.user.id)
-    likeNew = Like(user=user, post=post)
-    likeNew.save()
-    return JsonResponse({"message": "LIKED!"})
+    try:
+        Like.objects.get(user=user, post=post)  # Aynı kullanıcının daha önce beğendiğini kontrol et
+        return JsonResponse({"message": "You have already liked this post."})
+    except Like.DoesNotExist:
+        likeNew = Like(user=user, post=post)
+        likeNew.save()
+        post.num_likes += 1  # Beğeni sayısını artır
+        post.save()
+        return JsonResponse({"message": "LIKED!"})
 
 
 def edit(request, post_id):

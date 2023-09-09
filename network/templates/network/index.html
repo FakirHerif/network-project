@@ -35,32 +35,31 @@
     })
 }
 
-    let whoYouLiked = [];
 
-    function LikeHandler(id) {
-    let btn = document.getElementById(`${id}`);
+function LikeHandler(id) {
+  let btn = document.getElementById(`${id}`);
+  let likeCount = document.getElementById(`likeCount_${id}`);
 
-    if (whoYouLiked.indexOf(id) >= 0) {
-        fetch(`/like_remove/${id}`)
-            .then(response => response.json())
-            .then(result => {
-                btn.classList.remove('fa-thumbs-down');
-                btn.classList.add('fa-thumbs-up'); // Like yapıldığında butonu "fa-thumbs-up" olarak değiştir
-                // whoYouLiked dizisini güncelle 
-                whoYouLiked.splice(whoYouLiked.indexOf(id), 1); // Beğeni kaldır
-            });
-    } else {
-        fetch(`/like_add/${id}`)
-            .then(response => response.json())
-            .then(result => {
-                btn.classList.remove('fa-thumbs-up');
-                btn.classList.add('fa-thumbs-down'); // Unlike yapıldığında butonu "fa-thumbs-down" olarak değiştir
-                // whoYouLiked dizisini güncelle
-                whoYouLiked.push(id); // Beğeni ekle
-            });
-    }
+  if (btn.classList.contains('fa-thumbs-down')) {
+    fetch(`/like_remove/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        btn.classList.remove('fa-thumbs-down');
+        btn.classList.add('fa-thumbs-up');
+        let currentLikes = parseInt(likeCount.textContent); // Mevcut beğeni sayısını alın
+        likeCount.textContent = currentLikes - 1; // Beğeni sayısını azaltın ve güncelleyin
+      });
+  } else {
+    fetch(`/like_add/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        btn.classList.remove('fa-thumbs-up');
+        btn.classList.add('fa-thumbs-down');
+        let currentLikes = parseInt(likeCount.textContent); // Mevcut beğeni sayısını alın
+        likeCount.textContent = currentLikes + 1; // Beğeni sayısını artırın ve güncelleyin
+      });
+  }
 }
-
 
     // Bu fonksiyon, textarea'ya tıkladığınızda veya odaklandığınızda varsayılan metni siler
     function clearDefaultText(textarea) {
@@ -256,11 +255,8 @@
                           </div>
                     {% else %}
                     <br>
-                        {% if post.id in whoYouLiked %}
-                        <button class="btn btn-success fa fa-thumbs-down" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
-                        {% else %}
-                        <button class="btn btn-success fa fa-thumbs-up" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
-                        {% endif %}
+                    <button class="btn btn-success {% if post.id in whoYouLiked %}fa fa-thumbs-down{% else %}fa fa-thumbs-up{% endif %}" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`)"></button>
+                    <p class="likez">[ <span id="likeCount_{{ post.id }}">{{ post.num_likes }}</span> likes ]</p>
                     {% endif %}
                 {% endif %}
             </div>
