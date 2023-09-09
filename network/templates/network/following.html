@@ -2,7 +2,7 @@
 
 {% block body %}
 <div id="body">
-    {% if userCurrent %}
+   
 <h1 style="font-family:fantasy">Following</h1>
 
         {% for post in page_obj %}
@@ -39,9 +39,7 @@
       </nav>
 
     {% endfor %}  
-    {% else %} 
-    <p>You are not logged in. To see more content, please <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a>.</p>
-    {% endif %}
+        
 </div>
 
 {% endblock %}
