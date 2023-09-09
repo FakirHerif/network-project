@@ -83,7 +83,7 @@ def delete_post(request, post_id):
 def profile(request, user_id):
     user = User.objects.get(pk=user_id)
     allPosts = Post.objects.filter(user=user).order_by("id").reverse()
-    paginator = Paginator(allPosts, 2)
+    paginator = Paginator(allPosts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     following = Follow.objects.filter(user=user)
@@ -117,7 +117,7 @@ def following(request):
             if person.user_followed == post.user:
                 postsFollowing.append(post)
 
-    paginator = Paginator(postsFollowing, 2)
+    paginator = Paginator(postsFollowing, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
