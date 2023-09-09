@@ -21,31 +21,31 @@
 
 <div class="body">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{% url 'index' %}">Network</a>
-          
+            <img class="navbar-brand" src="{% static 'network/img.png' %}" alt="" style="height: 75px; width: 75px;">
+            <a class="navbar-brand" href="{% url 'index' %}" style="font-size: 25px;">Network</a>
             <div>
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' user_id=user.id %}"><strong style="color: greenyellow;">#{{ user.username }}'s Profile</strong></a>
+                        <a class="nav-link" href="{% url 'profile' user_id=user.id %}"><strong style="color: greenyellow; font-size: 20px;">#{{ user.username }}'s Profile</strong></a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                  <a class="nav-link" href="{% url 'index' %}" style="font-size: 20px;">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'following' %}">Following</a>
+                        <a class="nav-link" href="{% url 'following' %}" style="font-size: 20px;">Following</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                        <a class="nav-link" href="{% url 'logout' %}" style="font-size: 20px;">Log Out</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                        <a class="nav-link" href="{% url 'login' %}" style="font-size: 20px;">Log In</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-link" href="{% url 'register' %}" style="font-size: 20px;">Register</a>
                     </li>
                 {% endif %}
               </ul>

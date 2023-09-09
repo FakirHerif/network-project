@@ -166,5 +166,5 @@ textarea.value = newText;
 setTimeout(() => {
     emojiListInModal.style.pointerEvents = "auto"; // Diğer tıklamaları tekrar etkinleştirin
     emojiListInModal.style.opacity = "1"; // Opaklığı geri alın
-}, 200);
+}, 100);
 }
