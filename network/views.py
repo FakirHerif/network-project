@@ -14,7 +14,7 @@ from django.http import JsonResponse
 def index(request):
     allPosts = Post.objects.all().order_by("id").reverse()
     # add Pagination
-    paginator = Paginator(allPosts, 2)
+    paginator = Paginator(allPosts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

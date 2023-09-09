@@ -166,9 +166,9 @@
                     {% else %}
                     <br>
                         {% if post.id in whoYouLiked %}
-                        <button class="btn btn-info fa fa-thumbs-down col-1" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
+                        <button class="btn btn-success fa fa-thumbs-down" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
                         {% else %}
-                        <button class="btn btn-info fa fa-thumbs-up col-1" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
+                        <button class="btn btn-success fa fa-thumbs-up" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
                         {% endif %}
                     {% endif %}
                 {% endif %}
