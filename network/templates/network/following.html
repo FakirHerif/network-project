@@ -11,6 +11,12 @@
             <br>
             <h5 class="username"><a style="color: red; font-weight: bold; font-family:cursive" href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
             <p class="date">on {{ post.date }}</p>
+            <br>
+            {% if post.id in whoYouLiked %}
+            <button class="btn btn-success fa fa-thumbs-down" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
+            {% else %}
+            <button class="btn btn-success fa fa-thumbs-up" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
+            {% endif %}
         </div>
         
 
@@ -39,7 +45,7 @@
       </nav>
 
     {% endfor %}  
-        
+
 </div>
 
 {% endblock %}
