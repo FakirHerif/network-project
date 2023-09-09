@@ -6,21 +6,21 @@
 
         <div class="">
             <div class="">
-                <h3 style="font-family:fantasy" class="">Followers = {{ followers.count }} </h3>
-                <h3 style="font-family:fantasy" class="">Following = {{ following.count }}</h3>
+                <h3 style="color: rgb(81, 0, 255); font-family:fantasy" class="followerz">Followers = {{ followers.count }} </h3>
+                <h3 style="color: rgb(81, 0, 255); font-family:fantasy" class="followerz">Following = {{ following.count }}</h3>
                 {% if user.is_authenticated %}
                     {% if user != userExist %}
                         {% if isFollowing %}
                             <form action="{% url 'unfollow' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="userfollow" value="{{ userExist }}">
-                                <input type="submit" value="Unfollow">
+                                <input type="submit" value="Unfollow" class="btn btn-danger">
                             </form>
                         {% else %}
                             <form action="{% url 'follow' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="userfollow" value="{{ userExist }}">
-                                <input type="submit" value="Follow">
+                                <input type="submit" value="Follow" class="btn btn-success">
                             </form>
                         {% endif%}
                     {% endif %}
