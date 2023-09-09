@@ -64,7 +64,7 @@
 
     // Bu fonksiyon, textarea'ya tıkladığınızda veya odaklandığınızda varsayılan metni siler
     function clearDefaultText(textarea) {
-        if (textarea.value === "Write your post") {
+        if (textarea.value === "Write your post 😍") {
             textarea.value = "";
         }
     }
@@ -72,13 +72,13 @@
     // Bu fonksiyon, textarea odak kaybettiğinde ve içerik boşsa varsayılan metni geri ekler
     function restoreDefaultText(textarea) {
         if (textarea.value.trim() === "") {
-            textarea.value = "Write your post";
+            textarea.value = "Write your post 😍";
         }
     }
 
     // Bu fonksiyon, textarea boşsa veya varsayılan metni içeriyorsa göndermeyi engeller
     function checkEmpty(textarea) {
-        if (textarea.value.trim() === "" || textarea.value === "Write your post") {
+        if (textarea.value.trim() === "" || textarea.value === "Write your post 😍") {
             alert("Post content cannot be empty! or Post content cannot be same!");
             return false;
         }
@@ -151,12 +151,6 @@
             console.error("API'den veri alınamadı:", error);
         });
 
-// Seçilen emojiyi textarea'ya eklemek için işlev
-    function addEmojiToTextarea(emoji) {
-        const textarea = document.getElementById("postContent");
-        textarea.value += emoji;
-    }
-
     // Seçilen emojiyi textarea'ya eklemek için işlev
     function addEmojiToTextarea(emoji) {
         const textarea = document.getElementById("postContent");
@@ -166,14 +160,16 @@
     emojiListInModal.style.pointerEvents = "none"; // Diğer tıklamaları engellemek için
     emojiListInModal.style.opacity = "0.5"; // Opaklığı düşürün
 
-    // Emojiyi textarea'ya ekleyin
-    textarea.value += emoji;
+    // Mevcut metni ve seçilen emojiyi birleştirin
+    const currentText = textarea.value;
+    const newText = currentText === "Write your post 😍" ? emoji : currentText + emoji;
+    textarea.value = newText;
 
-    // 300 milisaniye sonra animasyonu geri alın
+    // 200 milisaniye sonra animasyonu geri alın
     setTimeout(() => {
         emojiListInModal.style.pointerEvents = "auto"; // Diğer tıklamaları tekrar etkinleştirin
         emojiListInModal.style.opacity = "1"; // Opaklığı geri alın
-    }, 300);
+    }, 200);
 }
 
 
@@ -187,7 +183,7 @@
             <h2 style="font-family:fantasy">New Post</h2>
             <form action="{% url 'addPost' %}" method="POST" onsubmit="return checkEmpty(this.content)">
                 {% csrf_token %}
-                <textarea name="content" id="postContent" style="font-size: 30px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" onclick="clearDefaultText(this)" onblur="restoreDefaultText(this)" oninput="checkDefaultText(this)">Write your post</textarea>
+                <textarea name="content" id="postContent" style="font-size: 30px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" onclick="clearDefaultText(this)" onblur="restoreDefaultText(this)" oninput="checkDefaultText(this)">Write your post 😍</textarea>
                 <br>
                 <input type="submit" name="" id="" class="sendButton" value="Send">
                 <button type="button" class="emojiButton" data-toggle="modal" data-target="#emojiModal">
