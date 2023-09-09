@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 
 from .models import User, Post, Follow, Like
 
-import json
+import json, requests
 from django.http import JsonResponse
 
 
@@ -199,3 +199,27 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+
+def get_emojis(request):
+    # Emoji API'sinin URL'si
+    api_url = "https://emoji-api.com/emojis?access_key=b47f13549869e1f055021025745a8322b2b06e6b"
+
+    try:
+        # API'den emoji verilerini al
+        response = requests.get(api_url)
+        response.raise_for_status()  # Hata durumunda isteği yükselt
+
+        # API yanıtını JSON olarak çöz
+        emojis = response.json()
+
+        # Emoji verilerini işleme veya kullanma işlemlerini burada gerçekleştirin
+        # Örnek: emojis değişkenini JsonResponse ile geri döndürün
+        return JsonResponse({"emojis": emojis})
+
+    except requests.exceptions.RequestException as e:
+        # API isteğinde bir hata oluştu
+        return JsonResponse({"error": str(e)})
+    
+    
