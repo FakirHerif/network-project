@@ -32,32 +32,35 @@ fetch(`/edit/${postId}`, {
 })
 }
 
-let whoYouLiked = [];
 
 function LikeHandler(id) {
-let btn = document.getElementById(`${id}`);
-
-if (whoYouLiked.indexOf(id) >= 0) {
-    fetch(`/like_remove/${id}`)
+    let btn = document.getElementById(`${id}`);
+    let likeCount = document.getElementById(`likeCount_${id}`);
+  
+    if (btn.classList.contains('fa-thumbs-down')) {
+      fetch(`/like_remove/${id}`)
         .then(response => response.json())
         .then(result => {
-            btn.classList.remove('fa-thumbs-down');
-            btn.classList.add('fa-thumbs-up'); // Like yapıldığında butonu "fa-thumbs-up" olarak değiştir
-            // whoYouLiked dizisini güncelle 
-            whoYouLiked.splice(whoYouLiked.indexOf(id), 1); // Beğeni kaldır
+          btn.classList.remove('fa-thumbs-down');
+          btn.classList.add('fa-thumbs-up');
+          btn.classList.remove('btn-danger');
+          btn.classList.add('btn-success');
+          let currentLikes = parseInt(likeCount.textContent); // Mevcut beğeni sayısını alın
+          likeCount.textContent = currentLikes - 1; // Beğeni sayısını azaltın ve güncelleyin
         });
-} else {
-    fetch(`/like_add/${id}`)
+    } else {
+      fetch(`/like_add/${id}`)
         .then(response => response.json())
         .then(result => {
-            btn.classList.remove('fa-thumbs-up');
-            btn.classList.add('fa-thumbs-down'); // Unlike yapıldığında butonu "fa-thumbs-down" olarak değiştir
-            // whoYouLiked dizisini güncelle
-            whoYouLiked.push(id); // Beğeni ekle
+          btn.classList.remove('fa-thumbs-up');
+          btn.classList.add('fa-thumbs-down');
+          btn.classList.remove('btn-success');
+          btn.classList.add('btn-danger');
+          let currentLikes = parseInt(likeCount.textContent); // Mevcut beğeni sayısını alın
+          likeCount.textContent = currentLikes + 1; // Beğeni sayısını artırın ve güncelleyin
         });
-}
-}
-
+    }
+  }
 
 // Bu fonksiyon, textarea'ya tıkladığınızda veya odaklandığınızda varsayılan metni siler
 function clearDefaultText(textarea) {

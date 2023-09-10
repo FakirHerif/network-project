@@ -12,14 +12,11 @@
             <h5 class="username"><a style="color: red; font-weight: bold; font-family:cursive" href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
             <p class="date">on {{ post.date }}</p>
             <br>
-            {% if post.id in whoYouLiked %}
-            <button class="btn btn-success fa fa-thumbs-down" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
-            {% else %}
-            <button class="btn btn-success fa fa-thumbs-up" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`, `{{ whoYouLiked }}`)"></button>
-            {% endif %}
+            <button class="btn {% if post.id in whoYouLiked %}btn-danger{% else %}btn-success{% endif %} fa {% if post.id in whoYouLiked %}fa-thumbs-down{% else %}fa-thumbs-up{% endif %}" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`)"></button>
+            <p class="likez">[ <span id="likeCount_{{ post.id }}">{{ post.num_likes }}</span> likes ]</p>
         </div>
-        
-
+        {% endfor %}  
+         
     <nav aria-label="Page navigation example">
         <ul class="pagination">
 
@@ -43,8 +40,6 @@
            
         </ul>
       </nav>
-
-    {% endfor %}  
 
 </div>
 

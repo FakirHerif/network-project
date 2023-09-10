@@ -46,6 +46,8 @@ function LikeHandler(id) {
       .then(result => {
         btn.classList.remove('fa-thumbs-down');
         btn.classList.add('fa-thumbs-up');
+        btn.classList.remove('btn-danger');
+        btn.classList.add('btn-success');
         let currentLikes = parseInt(likeCount.textContent); // Mevcut beğeni sayısını alın
         likeCount.textContent = currentLikes - 1; // Beğeni sayısını azaltın ve güncelleyin
       });
@@ -55,6 +57,8 @@ function LikeHandler(id) {
       .then(result => {
         btn.classList.remove('fa-thumbs-up');
         btn.classList.add('fa-thumbs-down');
+        btn.classList.remove('btn-success');
+        btn.classList.add('btn-danger');
         let currentLikes = parseInt(likeCount.textContent); // Mevcut beğeni sayısını alın
         likeCount.textContent = currentLikes + 1; // Beğeni sayısını artırın ve güncelleyin
       });
@@ -255,7 +259,7 @@ function LikeHandler(id) {
                           </div>
                     {% else %}
                     <br>
-                    <button class="btn btn-success {% if post.id in whoYouLiked %}fa fa-thumbs-down{% else %}fa fa-thumbs-up{% endif %}" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`)"></button>
+                    <button class="btn {% if post.id in whoYouLiked %}btn-danger{% else %}btn-success{% endif %} fa {% if post.id in whoYouLiked %}fa-thumbs-down{% else %}fa-thumbs-up{% endif %}" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`)"></button>
                     <p class="likez">[ <span id="likeCount_{{ post.id }}">{{ post.num_likes }}</span> likes ]</p>
                     {% endif %}
                 {% endif %}

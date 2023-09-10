@@ -12,6 +12,8 @@ from django.http import JsonResponse
 
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import AnonymousUser
+
 
 
 def index(request):
@@ -21,24 +23,19 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    likes = Like.objects.all()
+    liked_posts = []  # Beğenilen gönderilerin listesini oluşturun
 
-    whoYouLiked = []
-    try:
-        for like in likes:
-            if like.user.id == request.user.id:
-                whoYouLiked.append(like.post.id)
-    except:
-        whoYouLiked =[]
-    
-    user = request.user
-    liked_posts = Like.objects.filter(user=user).values_list('post__id', flat=True)
+    # Kullanıcı giriş yapmışsa, kullanıcıyı kontrol et
+    if request.user.is_authenticated:
+        user = request.user
+        liked_posts = Like.objects.filter(user=user).values_list('post__id', flat=True)
 
     return render(request, "network/index.html", {
         "allPosts": allPosts,
         "page_obj": page_obj,
         "whoYouLiked": liked_posts  
     })
+
 
 
 def like_remove(request, post_id):
@@ -104,14 +101,21 @@ def profile(request, user_id):
     page_obj = paginator.get_page(page_number)
     following = Follow.objects.filter(user=user)
     followers = Follow.objects.filter(user_followed=user)
-    try:
-        checkFollow = followers.filter(user=User.objects.get(pk=request.user.id))
-        if len(checkFollow) !=0:
-            isFollowing = True
-        else:
-            isFollowing = False
-    except:
-        isFollowing = False
+    isFollowing = False  # Varsayılan olarak takip edilmiyor olarak ayarlayın
+    liked_posts = []  # Beğenilen gönderilerin listesini oluşturun
+
+    # Kullanıcı giriş yapmışsa, kullanıcıyı kontrol et
+    if request.user.is_authenticated:
+        try:
+            checkFollow = followers.filter(user=request.user)
+            if len(checkFollow) != 0:
+                isFollowing = True
+
+            # Kullanıcının beğendiği gönderileri alın
+            liked_posts = Like.objects.filter(user=request.user).values_list('post__id', flat=True)
+        except:
+            pass
+
     return render(request, "network/profile.html", {
         "allPosts": allPosts,
         "page_obj": page_obj,
@@ -119,7 +123,8 @@ def profile(request, user_id):
         "following": following,
         "followers": followers,
         "isFollowing": isFollowing,
-        "userExist": user
+        "userExist": user,
+        "whoYouLiked": liked_posts 
     })
 
 @login_required
@@ -137,9 +142,17 @@ def following(request):
     paginator = Paginator(postsFollowing, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    liked_posts = []  # Beğenilen gönderilerin listesini oluşturun
+
+    # Kullanıcı giriş yapmışsa, kullanıcıyı kontrol et
+    if request.user.is_authenticated:
+        user = request.user
+        liked_posts = Like.objects.filter(user=user).values_list('post__id', flat=True)
+
 
     return render(request, "network/following.html", {
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "whoYouLiked": liked_posts 
     })
         
 
