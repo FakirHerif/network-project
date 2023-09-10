@@ -36,6 +36,8 @@
                 <br>
                 <h5 class="username"><a style="color: red; font-weight: bold; font-family:cursive" href="{% url 'profile' user_id=post.user.id %}">#{{ post.user }}</a></h5>
                 <p class="date">on {{ post.date }}</p>
+                <br>
+                <p class="likez">[ This post has been like <span id="likeCount_{{ post.id }}" style="font-weight: bold; color: red;">{{ post.num_likes }}</span> times ]</p>
                 {% if user.is_authenticated %}
                     {% if user == post.user %}
                     
@@ -65,7 +67,6 @@
                     {% else %}
                     <br>
                     <button class="btn {% if post.id in whoYouLiked %}btn-danger{% else %}btn-success{% endif %} fa {% if post.id in whoYouLiked %}fa-thumbs-down{% else %}fa-thumbs-up{% endif %}" id="{{ post.id }}" onclick="LikeHandler(`{{ post.id }}`)"></button>
-                    <p class="likez">[ <span id="likeCount_{{ post.id }}">{{ post.num_likes }}</span> likes ]</p>
                     {% endif %}
                 {% endif %}
             </div>
